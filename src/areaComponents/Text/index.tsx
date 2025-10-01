@@ -31,7 +31,7 @@ const InputTexto: React.FC<InputTextoProps> = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`px-3 py-2 rounded border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-green-400 ${sizeClass} ${className ?? ""}`}
+      className={`px-3 py-2   text-white placeholder-gray-400 focus:outline-none focus:border-green-400 ${sizeClass} ${className ?? ""}`}
     />
   );
 };
