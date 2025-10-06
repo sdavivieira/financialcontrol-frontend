@@ -1,6 +1,9 @@
+// expensetype/index.tsx
 import React, { useState } from "react";
 import Modal from "../../areaComponents/Modal";
 import Button from "../../areaComponents/Button";
+import api from "../../api";
+import { toast } from "react-toastify";
 
 interface ExpenseTypeModalProps {
   isOpen: boolean;
@@ -11,15 +14,27 @@ const ExpenseTypeModal: React.FC<ExpenseTypeModalProps> = ({ isOpen, onClose }) 
   const [name, setName] = useState("");
   const [inicialValue, setInicialValue] = useState<number | "">("");
   const [isFixed, setIsFixed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = () => {
-    // Aqui você pode enviar para API
-    console.log({
-      Name: name,
-      InicialValue: inicialValue,
-      IsFixed: isFixed,
-    });
-    onClose();
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      await api.post("/registertype", {
+        name,
+        inicialValue: Number(inicialValue),
+        isFixed,
+      });
+      toast.success("Tipo de despesa registrado com sucesso!");
+      setName("");
+      setInicialValue("");
+      setIsFixed(false);
+      onClose();
+    } catch (error) {
+      toast.error("Erro ao registrar tipo de despesa!");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,8 +65,8 @@ const ExpenseTypeModal: React.FC<ExpenseTypeModalProps> = ({ isOpen, onClose }) 
           Fixa
         </label>
 
-        <Button size="full" variant="filled" onClick={handleSave}>
-          Salvar
+        <Button size="full" variant="filled" onClick={handleSave} disabled={loading}>
+          {loading ? "Salvando..." : "Salvar"}
         </Button>
       </div>
     </Modal>

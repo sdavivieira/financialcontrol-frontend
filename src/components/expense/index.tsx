@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState,  useEffect } from "react";
 import Modal from "../../areaComponents/Modal";
 import Button from "../../areaComponents/Button";
-import { AuthContext } from "../../AuthContext";
+import api from "../../api";
+import { toast } from "react-toastify";
 
 interface ExpenseType {
   id: number;
@@ -15,30 +16,34 @@ interface ExpenseModalProps {
 }
 
 const ExpenseModal: React.FC<ExpenseModalProps> = ({ isOpen, onClose, expenseTypes }) => {
-  const auth = useContext(AuthContext);
 
   const [expenseTypeId, setExpenseTypeId] = useState<number>(0);
   const [value, setValue] = useState<number | "">("");
-  const [date, setDate] = useState<string>("");
 
-  // Reseta campos sempre que o modal abre
   useEffect(() => {
     if (isOpen) {
       setExpenseTypeId(0);
       setValue("");
-      setDate("");
     }
   }, [isOpen]);
 
-  const handleSave = () => {
-    console.log({
-      ExpenseTypeId: expenseTypeId,
-      Value: value,
-      Date: date,
-      UserId: auth?.user?.id,
+ const handleSave = async () => {
+  try {
+    const response = await api.post("/register", {
+      expenseTypeId: expenseTypeId,
+      value: value,
     });
-    onClose();
-  };
+
+    if(response.data.success){
+      toast.success("Despesa salva com sucesso!");
+      onClose();
+    }
+  } catch (error) {
+    console.error("Erro ao salvar despesa:", error);
+    toast.error("Não foi possível salvar a despesa");
+  }
+};
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Registrar Despesa">
@@ -68,14 +73,8 @@ const ExpenseModal: React.FC<ExpenseModalProps> = ({ isOpen, onClose, expenseTyp
           onChange={(e) => setValue(Number(e.target.value))}
         />
 
-        <input
-          type="date"
-          className="p-2 border rounded"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
 
-        <Button size="full" variant="filled" onClick={handleSave} disabled={expenseTypeId === 0 || !value || !date}>
+        <Button size="full" variant="filled" onClick={handleSave} disabled={expenseTypeId === 0 || !value}>
           Salvar
         </Button>
       </div>

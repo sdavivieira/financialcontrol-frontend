@@ -3,9 +3,9 @@ import { AuthContext } from "../../AuthContext";
 import { LoginType } from "../../types/usertypes";
 import { toast } from "react-toastify";
 import Button from "../../areaComponents/Button";
-import InputText from "../../areaComponents/Text";
-import { useNavigate } from "react-router-dom";
-import Layout from "../../areaComponents/Layout";
+import InputTexto from "../../areaComponents/Text";
+import { useNavigate, Navigate } from "react-router-dom";
+import LayoutPublic from "../../areaComponents/LayoutPublic";
 
 export default function Login() {
   const [form, setForm] = useState<LoginType>({ email: "", password: "" });
@@ -30,43 +30,41 @@ export default function Login() {
     navigate("/register");
   };
 
+  if (auth?.user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
-    <Layout>
+    <LayoutPublic>
       <h1 className="text-3xl font-bold mb-6 text-center">Controle Financeiro</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <InputTexto
+          id="email"
+          label="E-mail"
+          size="full"
+          type="email"
+          value={form.email}
+          placeholder="Digite seu e-mail"
+          onChange={e => setForm({ ...form, email: e.target.value })}
+        />
 
-      {auth?.user ? (
-        <div className="flex flex-col items-center gap-4">
-          <p className="text-gray-900 text-center">Bem-vindo, {auth.user.email}</p>
-          <Button size="md" onClick={auth.logout}>
-            Sair
-          </Button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <InputText
-            size="full"
-            type="email"
-            value={form.email}
-            placeholder="Email"
-            onChange={e => setForm({ ...form, email: e.target.value })}
-          />
+        <InputTexto
+          id="password"
+          label="Senha"
+          size="full"
+          type="password"
+          value={form.password}
+          placeholder="Digite sua senha"
+          onChange={e => setForm({ ...form, password: e.target.value })}
+        />
 
-          <InputText
-            size="full"
-            type="password"
-            value={form.password}
-            placeholder="Senha"
-            onChange={e => setForm({ ...form, password: e.target.value })}
-          />
-
-          <Button size="full" type="submit">
-            Entrar
-          </Button>
-          <Button size="full" variant="outline" onClick={handleRegister}>
-            Registrar conta
-          </Button>
-        </form>
-      )}
-    </Layout>
+        <Button size="full" type="submit">
+          Entrar
+        </Button>
+        <Button size="full" variant="outline" onClick={handleRegister}>
+          Registrar conta
+        </Button>
+      </form>
+    </LayoutPublic>
   );
 }

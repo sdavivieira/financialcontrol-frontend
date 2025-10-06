@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { RegisterType } from "../../types/usertypes";
 import Button from "../../areaComponents/Button";
-import InputText from "../../areaComponents/Text";
+import InputTexto from "../../areaComponents/Text";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { toast } from "react-toastify";
-import Layout from "../../areaComponents/Layout";
+import LayoutPublic from "../../areaComponents/LayoutPublic";
 
 export default function Register() {
   const [form, setForm] = useState<RegisterType>({ email: "", name: "", password: "" });
@@ -25,28 +25,36 @@ export default function Register() {
   };
 
   return (
-    <Layout>
+    <LayoutPublic>
       <h1 className="text-3xl font-bold mb-6 text-center">Registrar Conta</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <InputText
+        <InputTexto
+          id="email"
+          label="E-mail"
           size="full"
           type="email"
           value={form.email}
-          placeholder="Email"
+          placeholder="Digite seu e-mail"
           onChange={e => setForm({ ...form, email: e.target.value })}
         />
-        <InputText
+
+        <InputTexto
+          id="name"
+          label="Nome"
           size="full"
           type="text"
           value={form.name}
-          placeholder="Nome"
+          placeholder="Digite seu nome"
           onChange={e => setForm({ ...form, name: e.target.value })}
         />
-        <InputText
+
+        <InputTexto
+          id="password"
+          label="Senha"
           size="full"
           type="password"
           value={form.password}
-          placeholder="Senha"
+          placeholder="Digite sua senha"
           onChange={e => setForm({ ...form, password: e.target.value })}
         />
 
@@ -57,6 +65,6 @@ export default function Register() {
           Voltar
         </Button>
       </form>
-    </Layout>
+    </LayoutPublic>
   );
 }

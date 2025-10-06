@@ -26,13 +26,12 @@ const Button: React.FC<ButtonProps> = ({
     lg: "w-48 py-3",
   }[size];
 
-  const baseClass = `font-bold rounded px-4 transition-colors duration-200 focus:outline-none`;
+  const baseClass = `font-semibold rounded-lg px-4 transition-all duration-200 focus:outline-none`;
 
   const variantClass =
     variant === "filled"
-      ? "bg-green-400 text-gray-900 hover:bg-green-500 disabled:bg-gray-300 disabled:text-gray-500"
-      : "bg-transparent border border-gray-400 text-gray-400 hover:bg-gray-400 hover:text-green-500 disabled:border-green-300 disabled:text-green-300"
-;
+      ? "bg-emerald-500 text-white hover:bg-emerald-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+      : "bg-transparent border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed";
 
   return (
     <button

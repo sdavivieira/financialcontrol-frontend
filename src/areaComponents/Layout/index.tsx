@@ -14,7 +14,7 @@ function Layout({ children }: LayoutProps) {
       <div className="flex flex-1">
         <Profile />
 
-        <div className="flex-1 p-6 bg-gray-100 overflow-y-auto">
+        <div className="flex-1 p-6 bg-gray-50 overflow-y-auto">
           {children}
         </div>
       </div>

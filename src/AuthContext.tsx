@@ -42,6 +42,7 @@ const login = async (email: string, password: string) => {
     try {
       await api.post("/logout");
       setUser(null);
+      toast.success("Obrigado e atenção nos gastos :)")
       navigate("/")
     } catch (error) {
       console.error("Erro no logout:", error);
